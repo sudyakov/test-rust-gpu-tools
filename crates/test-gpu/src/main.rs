@@ -20,11 +20,25 @@ fn opencl(device: &Device) -> Program {
 
 pub fn main() {
 
+    // Вывести на екран список доступных устройств с их описанием.
+    let devices = Device::all();
+    
+    println!("Available devices:");
+    for device in devices {
+        println!("- {} ({})", device.name(), device.vendor());
+        println!("    Memory: {} MB", device.memory() / 1024 / 1024);
+        println!("    Compute units: {}", device.compute_units());
+        println!("    Compute capability: {:?}", 
+            device.compute_capability()
+        );
+    }
+
+
 
 
     print!("Run test-gpu: main.rs\n");
     // Define some data that should be operated on.
-    let aa: Vec<u32> = vec![1, 2, 3, 4];
+    let aa: Vec<u32> = vec![1, 2, 3, 4]; 
     let bb: Vec<u32> = vec![5, 6, 7, 8];
 
     // This is the core. Here we write the interaction with the GPU independent of whether it is
@@ -38,7 +52,7 @@ pub fn main() {
         let aa_buffer = program.create_buffer_from_slice(&aa)?;
         let bb_buffer = program.create_buffer_from_slice(&bb)?;
 
-        // The result buffer has the same length as the input buffers.
+        // The result buffer has the same length as the input buffers. 
         let result_buffer = unsafe { program.create_buffer::<u32>(length)? };
 
         // Get the kernel.
