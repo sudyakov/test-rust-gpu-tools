@@ -33,9 +33,6 @@ pub fn main() {
         );
     }
 
-
-
-
     print!("Run test-gpu: main.rs\n");
     // Define some data that should be operated on.
     let aa: Vec<u32> = vec![1, 2, 3, 4]; 
