@@ -12,9 +12,8 @@ pub(crate) mod utils;
 
 use std::convert::TryFrom;
 use std::ffi::{c_void, CStr, CString};
-use std::fmt;
 use std::hash::{Hash, Hasher};
-use std::mem;
+use std::{fmt, mem};
 
 use log::debug;
 use rustacuda::memory::{AsyncCopyDestination, DeviceBuffer};

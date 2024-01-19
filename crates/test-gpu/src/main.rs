@@ -30,15 +30,14 @@ fn opencl(device: &Device) -> Program {
 
 //
 pub fn main() {
-
     // Вывести на екран список доступных устройств с их описанием.
     show_list_devices();
 
     print!("\nRun test-gpu: main.rs\n");
     // Define some data that should be operated on.
-    let aa: Vec<u32> = vec![1, 2, 3, 4]; 
+    let aa: Vec<u32> = vec![1, 2, 3, 4];
     let bb: Vec<u32> = vec![5, 6, 7, 8];
-    
+
     // This is the core. Here we write the interaction with the GPU independent of whether it is
     // CUDA or OpenCL.
     let closures_test = program_closures!(|program, _args| -> Result<Vec<u32>, GPUError> {
@@ -50,7 +49,7 @@ pub fn main() {
         let aa_buffer = program.create_buffer_from_slice(&aa)?;
         let bb_buffer = program.create_buffer_from_slice(&bb)?;
 
-        // The result buffer has the same length as the input buffers. 
+        // The result buffer has the same length as the input buffers.
         let result_buffer = unsafe { program.create_buffer::<u32>(length)? };
 
         // Get the kernel.
@@ -72,7 +71,7 @@ pub fn main() {
         Ok(result)
     });
 
-    let closures_blake3= program_closures!(|program, arg: u8| -> bool {
+    let closures_blake3 = program_closures!(|program, arg: u8| -> bool {
         println!("Run blake3_gpu on CUDA");
 
         true
@@ -81,7 +80,7 @@ pub fn main() {
     // First we run it on CUDA if available
     let nv_dev_list = Device::by_vendor(Vendor::Nvidia);
     if !nv_dev_list.is_empty() {
-        // 
+        //
         test_nvidia_cuda_flow(&nv_dev_list, closures_test);
         //
         test_nvidia_opencl_flow(nv_dev_list, closures_test);
@@ -106,14 +105,26 @@ pub fn main() {
 }
 
 // Test NVIDIA CUDA Flow
-fn test_nvidia_cuda_flow(nv_dev_list: &Vec<&Device>, closures_test: (impl Fn(&cuda::Program, ()) -> Result<Vec<u32>, GPUError>, impl Fn(&opencl::Program, ()) -> Result<Vec<u32>, GPUError>)) {
+fn test_nvidia_cuda_flow(
+    nv_dev_list: &Vec<&Device>,
+    closures_test: (
+        impl Fn(&cuda::Program, ()) -> Result<Vec<u32>, GPUError>,
+        impl Fn(&opencl::Program, ()) -> Result<Vec<u32>, GPUError>,
+    ),
+) {
     let cuda_program = cuda(nv_dev_list[0]);
     let cuda_result = cuda_program.run(closures_test, ()).unwrap();
     assert_eq!(cuda_result, [6, 8, 10, 12]);
     println!("Test NVIDIA CUDA Flow result: {:?}", cuda_result);
 }
 // Test NVIDIA OpenCL Flow
-fn test_nvidia_opencl_flow(nv_dev_list: Vec<&Device>, closures_test: (impl Fn(&cuda::Program, ()) -> Result<Vec<u32>, GPUError>, impl Fn(&opencl::Program, ()) -> Result<Vec<u32>, GPUError>)) {
+fn test_nvidia_opencl_flow(
+    nv_dev_list: Vec<&Device>,
+    closures_test: (
+        impl Fn(&cuda::Program, ()) -> Result<Vec<u32>, GPUError>,
+        impl Fn(&opencl::Program, ()) -> Result<Vec<u32>, GPUError>,
+    ),
+) {
     let opencl_program = opencl(nv_dev_list[0]);
     let opencl_result = opencl_program.run(closures_test, ()).unwrap();
     assert_eq!(opencl_result, [6, 8, 10, 12]);
@@ -123,14 +134,12 @@ fn test_nvidia_opencl_flow(nv_dev_list: Vec<&Device>, closures_test: (impl Fn(&c
 // Вывести на екран список доступных устройств с их описанием.
 fn show_list_devices() {
     let devices = Device::all();
-    
+
     println!("Available devices:");
     for device in devices {
         println!("- {} ({})", device.name(), device.vendor());
         println!("    Memory: {} MB", device.memory() / 1024 / 1024);
         println!("    Compute units: {}", device.compute_units());
-        println!("    Compute capability: {:?}", 
-            device.compute_capability()
-        );
+        println!("    Compute capability: {:?}", device.compute_capability());
     }
 }

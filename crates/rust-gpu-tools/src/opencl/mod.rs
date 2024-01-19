@@ -4,8 +4,7 @@ pub(crate) mod utils;
 
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
-use std::mem;
-use std::ptr;
+use std::{mem, ptr};
 
 use opencl3::command_queue::CommandQueue;
 use opencl3::context::Context;
