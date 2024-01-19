@@ -1,0 +1,21 @@
+# Компоненты Rust Toolchain
+[toolchain]
+
+# Канал ночных сборок   
+channel = "nightly-x86_64-pc-windows-msvc"  
+
+# Компоненты для установки
+components = [
+  "rustc",       # Компилятор
+  "cargo",       # Менеджер пакетов  
+  "rustfmt",     # Форматтер кода
+  "clippy",      # Линтер 
+  "rls",         # Language Server
+  "rust-analysis", # Анализатор кода
+  "rust-src",    # Исходный код Rust
+  "llvm-tools",  # Инструменты LLVM
+  "rust-docs",   # Документация
+]
+
+# Целевые платформы
+targets = ["x86_64-pc-windows-msvc"]  

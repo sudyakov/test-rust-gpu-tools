@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"rust_gpu_tools":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"rust_gpu_tools/struct.DeviceUuid.html\" title=\"struct rust_gpu_tools::DeviceUuid\">DeviceUuid</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"rust_gpu_tools/struct.PciId.html\" title=\"struct rust_gpu_tools::PciId\">PciId</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

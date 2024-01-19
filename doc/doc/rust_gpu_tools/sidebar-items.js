@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Framework","GPUError","Program","UniqueId","Vendor"],"macro":["program_closures"],"mod":["cuda","opencl"],"struct":["Device","DeviceUuid","LocalBuffer","PciId"]};
