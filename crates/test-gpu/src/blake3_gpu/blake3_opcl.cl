@@ -1,9 +1,3 @@
-// Copyright (c) 2023 The Decred developers.
-//
-// Decred BLAKE3 midstate-based kernel
-
-// Written and optimized by Dave Collins Sep 2023.
-//
 // AMD RX 580         - 3.68 Gh/s
 // AMD Vega 56        - 7.00 Gh/s
 // NVIDIA RTX 4070    - 14.85 Gh/s

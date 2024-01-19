@@ -1,9 +1,3 @@
-// Copyright (c) 2023 The Decred developers.
-//
-// Decred BLAKE3 midstate-based CUDA kernel
-
-// Written and optimized by Dave Collins Sep 2023.
-
 #include <stdint.h>
 
 #if defined(_WIN32)
@@ -14,7 +8,6 @@
 
 #define MAX_OUTPUT_RESULTS 32
 
-// Written and optimized by Dave Collins Sep 2023.
 #if (__CUDACC_VER_MAJOR__ >= 10) && (__CUDA_ARCH__ > 300)
 #define ROTR(v, n) __funnelshift_rc((v), (v), n)
 #else
@@ -173,7 +166,7 @@ void search(
 
 extern "C" {
 __host__ DLLEXPORT void
-decred_blake3_hash(const uint32_t dimgrid, const uint32_t threads, uint32_t *cv, uint32_t *m, uint32_t *out)
+cuda_blake3_hash(const uint32_t dimgrid, const uint32_t threads, uint32_t *cv, uint32_t *m, uint32_t *out)
 {
 	search<<<dimgrid, threads>>>(
 		out,
