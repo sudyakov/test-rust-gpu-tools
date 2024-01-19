@@ -1,17 +1,17 @@
 #include <stdint.h>
 
 #if defined(_WIN32)
-#define DLLEXPORT __declspec(dllexport)
+#define DLLEXPORT __declspec(dllexport) // Определение для экспорта функций из dll в Windows 
 #else
-#define DLLEXPORT
+#define DLLEXPORT // Определение для экспорта функций из dll в других ОС (не Windows)
 #endif /* _WIN32 */
 
-#define MAX_OUTPUT_RESULTS 32
+#define MAX_OUTPUT_RESULTS 32 // Максимальное количество результатов для вывода
 
-#if (__CUDACC_VER_MAJOR__ >= 10) && (__CUDA_ARCH__ > 300)
-#define ROTR(v, n) __funnelshift_rc((v), (v), n)
+#if (__CUDACC_VER_MAJOR__ >= 10) && (__CUDA_ARCH__ > 300) 
+#define ROTR(v, n) __funnelshift_rc((v), (v), n) // Смешение битов вправо с использованием встроенной функции сдвига для новых версий CUDA
 #else
-#define ROTR(v, n) ((v) >> n) | ((v) << (32 - n))
+#define ROTR(v, n) ((v) >> n) | ((v) << (32 - n)) // Смешение битов вправо с использованием битовых операций для старых версий CUDA
 #endif
 
 
