@@ -163,8 +163,6 @@ void search(
     output[pos] = m3;
 }
 
-extern "C" __constant__ int my_constant = 314;
-
 extern "C" {
 __host__ DLLEXPORT void
 cuda_blake3_hash(const uint32_t dimgrid, const uint32_t threads, uint32_t *cv, uint32_t *m, uint32_t *out)

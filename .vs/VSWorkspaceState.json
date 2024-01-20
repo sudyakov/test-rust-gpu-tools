@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\crates",
+    "\\crates\\test-gpu",
+    "\\crates\\test-gpu\\src",
+    "\\crates\\test-gpu\\src\\blake3_gpu"
+  ],
+  "PreviewInSolutionExplorer": false
+}
