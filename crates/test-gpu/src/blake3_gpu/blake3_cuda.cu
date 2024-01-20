@@ -163,6 +163,7 @@ void search(
     output[pos] = m3;
 }
 
+extern "C" __constant__ int my_constant = 314;
 
 extern "C" {
 __host__ DLLEXPORT void

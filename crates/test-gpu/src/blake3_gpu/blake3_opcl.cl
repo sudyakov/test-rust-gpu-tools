@@ -4,6 +4,16 @@
 // NVIDIA Tesla V100  - 13.89 Gh/s
 // NVIDIA Tesla V100S - 14.60 Gh/s
 
+// CUDA
+#ifdef __CUDACC__
+  #define GLOBAL
+  #define KERNEL extern "C" __global__
+// OpenCL
+#else
+  #define GLOBAL __global
+  #define KERNEL __kernel
+#endif
+
 #define ROTR(v, n) rotate(v, (uint)(32U - n))
 
 __attribute__((reqd_work_group_size(WORKSIZE, 1, 1)))
