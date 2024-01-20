@@ -13,16 +13,14 @@ fn show_list_devices(devices: &Vec<&Device>) {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-
     let devices = Device::all();
     show_list_devices(&devices);
 
     // Найти первое CUDA устройство в списке devices
-    let first_cude_device = devices.iter().find(|d| d.vendor() == Vendor::Nvidia); 
-    // вывод имени первого устройства
+    let first_cude_device = devices.iter().find(|d| d.vendor() == Vendor::Nvidia);
+    // Вывод имени первого устройства
     if let Some(device) = first_cude_device {
-    println!("First CUDA device: {}", device.name());
-}
+        println!("First CUDA device: {}", device.name());
+    }
     Ok(())
-
-}// end main function
+} // end main function
