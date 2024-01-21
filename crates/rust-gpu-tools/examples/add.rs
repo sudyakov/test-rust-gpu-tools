@@ -4,7 +4,7 @@ use rust_gpu_tools::{cuda, opencl, program_closures, Device, GPUError, Program, 
 fn cuda(device: &Device) -> Program {
     // The kernel was compiled with:
     // nvcc -fatbin -gencode=arch=compute_52,code=sm_52 -gencode=arch=compute_60,code=sm_60 -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_75,code=sm_75 -gencode=arch=compute_75,code=compute_75 --x cu add.cl
-    let cuda_kernel = include_bytes!("./add.fatbin");
+    let cuda_kernel = include_bytes!("add.fatbin");
     let cuda_device = device.cuda_device().unwrap();
     let cuda_program = cuda::Program::from_bytes(cuda_device, cuda_kernel).unwrap();
     Program::Cuda(cuda_program)
@@ -12,7 +12,7 @@ fn cuda(device: &Device) -> Program {
 
 /// Returns a `Program` that runs on OpenCL.
 fn opencl(device: &Device) -> Program {
-    let opencl_kernel = include_str!("./add.cl");
+    let opencl_kernel = include_str!("add.cl");
     let opencl_device = device.opencl_device().unwrap();
     let opencl_program = opencl::Program::from_opencl(opencl_device, opencl_kernel).unwrap();
     Program::Opencl(opencl_program)
