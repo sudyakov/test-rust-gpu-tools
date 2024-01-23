@@ -1,3 +1,4 @@
 /target
 .vscode
 test-rust-gpu-tools.code-workspace
+cuda-samples-12.3
