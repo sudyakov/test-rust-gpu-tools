@@ -150,7 +150,7 @@ pub fn main() {
     //     .arg(&result_buffer)
     //     .run()?;
 
-    // // Get the resulting data.
+    // // Get the resulting data. 
     // let mut result = vec![0u32; length];
     // program.read_into_buffer(&result_buffer, &mut result)?;
     // Ok(result)
