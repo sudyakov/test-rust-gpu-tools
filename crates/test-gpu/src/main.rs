@@ -1,10 +1,12 @@
+
+
 use rust_gpu_tools::{cuda, opencl, program_closures, Device, GPUError, Program, Vendor};
 
 /// Returns a `Program` that runs on CUDA.
 fn cuda(device: &Device) -> Program {
     // The kernel was compiled with:
     // nvcc -fatbin -gencode=arch=compute_52,code=sm_52 -gencode=arch=compute_60,code=sm_60 -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_75,code=sm_75 -gencode=arch=compute_75,code=compute_75 --x cu add.cl
-    let cuda_kernel = include_bytes!("../../rust-gpu-tools/examples/add.fatbin");
+    let cuda_kernel = include_bytes!("blake3_gpu/blake3_cuda.fatbin");
     let cuda_device = device.cuda_device().unwrap();
     let cuda_program = cuda::Program::from_bytes(cuda_device, cuda_kernel).unwrap();
     Program::Cuda(cuda_program)
@@ -88,33 +90,35 @@ pub fn main() {
 
     print!("\nRun test-gpu: main.rs\n");
     // Define some data that should be operated on.
-    let aa: Vec<u32> = vec![1, 2, 3, 4];
-    let bb: Vec<u32> = vec![5, 6, 7, 8];
-    let test_blake3: Vec<u32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    // let aa: Vec<u32> = vec![1, 2, 3, 4];
+    // let bb: Vec<u32> = vec![5, 6, 7, 8];
+    let test_blake3: Vec<u32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
 
     // This is the core. Here we write the interaction with the GPU independent of whether it is
     // CUDA or OpenCL.
     let closures_test = program_closures!(|program, _args| -> Result<Vec<u32>, GPUError> {
         // Make sure the input data has the same length.
-        assert_eq!(aa.len(), bb.len());
-        let length = aa.len();
+        assert_eq!(test_blake3.len(), 32);
+        let length = test_blake3.len();
 
         // Copy the data to the GPU.
-        let aa_buffer = program.create_buffer_from_slice(&aa)?;
-        let bb_buffer = program.create_buffer_from_slice(&bb)?;
+        // let aa_buffer = program.create_buffer_from_slice(&aa)?;
+        // let bb_buffer = program.create_buffer_from_slice(&bb)?;
+        let test_blake3_buffer = program.create_buffer_from_slice(&test_blake3)?;
+        println!("Copy the data to the GPU - Done.\n");
 
         // The result buffer has the same length as the input buffers.
         let result_buffer = unsafe { program.create_buffer::<u32>(length)? };
 
         // Get the kernel.
-        let kernel = program.create_kernel("add", 1, 1)?;
+        // let kernel = program.create_kernel("add", 1, 1)?;
+        let kernel = program.create_kernel("cuda_blake3_hash", 1, 1)?;
 
         // Execute the kernel.
         print!("Execute the kernel started.\n");
         kernel
             .arg(&(length as u32))
-            .arg(&aa_buffer)
-            .arg(&bb_buffer)
+            .arg(&test_blake3_buffer)
             .arg(&result_buffer)
             .run()?;
 

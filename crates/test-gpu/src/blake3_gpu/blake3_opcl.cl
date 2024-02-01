@@ -4,6 +4,7 @@
 // NVIDIA Tesla V100  - 13.89 Gh/s
 // NVIDIA Tesla V100S - 14.60 Gh/s
 
+typedef unsigned int uint;
 // CUDA
 #ifdef __CUDACC__
   #define GLOBAL

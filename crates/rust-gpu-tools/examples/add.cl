@@ -1,3 +1,4 @@
+typedef unsigned int uint;
 // CUDA
 #ifdef __CUDACC__
   #define GLOBAL

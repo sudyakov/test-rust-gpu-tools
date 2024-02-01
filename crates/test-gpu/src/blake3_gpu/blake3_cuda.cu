@@ -1,4 +1,5 @@
 #include <stdint.h>
+//typedef unsigned int uint;
 
 #if defined(_WIN32)
 #define DLLEXPORT __declspec(dllexport) // Определение для экспорта функций из dll в Windows 

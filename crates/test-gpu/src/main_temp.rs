@@ -1,4 +1,5 @@
-//
+
+
 use rust_gpu_tools::{cuda, opencl, program_closures, Device, GPUError, Program, Vendor};
 
 // Вывести на екран список доступных устройств с их описанием.
