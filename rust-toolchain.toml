@@ -2,7 +2,7 @@
 [toolchain]
 
 # Канал ночных сборок   
-#channel = "nightly-x86_64-unknown-linux-gnu"  
+ channel = "nightly"  
 
 # Компоненты для установки
 components = [
@@ -18,4 +18,4 @@ components = [
 ]
 
 # Целевые платформы
-# targets = ["x86_64-pc-windows-msvc"]  
+targets = ["x86_64-pc-windows-msvc"]  
