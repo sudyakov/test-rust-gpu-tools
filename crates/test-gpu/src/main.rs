@@ -1,5 +1,3 @@
-
-
 use rust_gpu_tools::{cuda, opencl, program_closures, Device, GPUError, Program, Vendor};
 
 /// Returns a `Program` that runs on CUDA.
