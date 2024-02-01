@@ -1,5 +1,3 @@
-
-
 use rust_gpu_tools::{cuda, opencl, program_closures, Device, GPUError, Program, Vendor};
 
 // Вывести на екран список доступных устройств с их описанием.
@@ -13,7 +11,7 @@ fn show_list_devices(devices: &Vec<&Device>) {
     }
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Получить список доступных устройств
     let devices = Device::all();
     show_list_devices(&devices);
