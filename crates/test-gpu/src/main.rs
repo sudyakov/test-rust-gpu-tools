@@ -1,4 +1,4 @@
-use rust_gpu_tools::{cuda, program_closures, Device, GPUError, Program, Vendor};
+use rust_gpu_tools::{cuda::{self, Kernel}, program_closures, Device, GPUError, Program, Vendor};
 // Получаем первое доступное CUDA устройство из принимаемого списка.
 fn get_cuda_device(devices: Vec<&Device>) -> Result<&Device, GPUError> {
     for device in devices {
@@ -12,7 +12,7 @@ fn get_cuda_device(devices: Vec<&Device>) -> Result<&Device, GPUError> {
 fn cuda(device: &Device) -> Program {
     // The kernel was compiled with:
     // nvcc -fatbin --x cu add.cl
-    let cuda_kernel = include_bytes!("../add/add.fatbin");
+    let cuda_kernel = include_bytes!("../blake3_gpu/blake3_test.fatbin");
     let cuda_device = device.cuda_device().unwrap();
     let cuda_program = cuda::Program::from_bytes(cuda_device, cuda_kernel).unwrap();
     Program::Cuda(cuda_program)
@@ -54,7 +54,7 @@ pub fn main() {
         let result_buffer = unsafe { program.create_buffer::<u32>(length)? };
 
         // Get the kernel.
-        let kernel = program.create_kernel("add", 1, 1)?;
+        let mut kernel = program.create_kernel("add", 1, 1)?;
 
         // Execute the kernel.
         kernel
@@ -67,6 +67,12 @@ pub fn main() {
         // Get the resulting data.
         let mut result = vec![0u32; length];
         program.read_into_buffer(&result_buffer, &mut result)?;
+        
+        //Test
+        kernel = program.create_kernel("hello", 1, 1)?;
+        kernel
+            .arg(&result_buffer)
+            .run()?;
 
         Ok(result)
     });
