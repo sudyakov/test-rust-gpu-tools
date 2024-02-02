@@ -1,4 +1,4 @@
-use rust_gpu_tools::{cuda::{self, Kernel}, program_closures, Device, GPUError, Program, Vendor};
+use rust_gpu_tools::{cuda, program_closures, Device, GPUError, Program, Vendor};
 // Получаем первое доступное CUDA устройство из принимаемого списка.
 fn get_cuda_device(devices: Vec<&Device>) -> Result<&Device, GPUError> {
     for device in devices {
