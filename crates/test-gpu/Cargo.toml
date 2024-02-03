@@ -6,4 +6,4 @@ edition = "2021"
 
 [dependencies]
 home = "0.5.9"
-rust-gpu-tools = { version = "0.7.2", path = "../rust-gpu-tools" }
+rust-gpu-tools = { version = "0.7.2", path = "../../rust-gpu-tools" }

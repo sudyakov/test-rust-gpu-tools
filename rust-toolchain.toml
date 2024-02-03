@@ -2,7 +2,7 @@
 [toolchain]
 
 # Канал ночных сборок   
- channel = "nightly"  
+# channel = "nightly"  
 
 # Компоненты для установки
 components = [
