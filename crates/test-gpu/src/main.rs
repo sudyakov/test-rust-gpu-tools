@@ -80,8 +80,9 @@ pub fn main() {
         .arg(&result_buffer)
         .run()?;
         
-        // kernel = program.create_kernel("cuda_sort_descending", 1, 1)?;
-        //     kernel
+        //kernel = program.create_kernel("cuda_sort_descending", 1, 1)?;
+
+
 
 
 //KERNEL void add(uint num, GLOBAL uint *a, GLOBAL uint *b, GLOBAL uint *result)
