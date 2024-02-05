@@ -31,7 +31,7 @@ pub fn main() {
         Ok(result)
     });
     let cuda_program = cuda(cuda_device);
-    let cuda_result = cuda_program.run(closures, ()).unwrap();
+    let cuda_result = cuda_program.run(closures, ());
     println!("CUDA result: \n{:?}", cuda_result);
     println!("CUDA test passed");
 

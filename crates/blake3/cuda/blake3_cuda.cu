@@ -29,3 +29,10 @@ KERNEL void sortDescending(uint num, GLOBAL uint *data, GLOBAL uint *result) {
 
   thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
 }
+extern "C" {
+ __global__
+void hello() {
+
+    printf("void hello(): Hello, World!\n");
+  }
+}
