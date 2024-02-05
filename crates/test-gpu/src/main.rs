@@ -81,14 +81,6 @@ pub fn main() {
         .run()?;
         
         //kernel = program.create_kernel("cuda_sort_descending", 1, 1)?;
-
-
-
-
-//KERNEL void add(uint num, GLOBAL uint *a, GLOBAL uint *b, GLOBAL uint *result)
-//cuda_blake3_hash(const uint32_t dimgrid, const uint32_t threads, uint32_t *cv, uint32_t *m, uint32_t *out)
-// End test
-
         Ok(result)
     });
     // First we run it on CUDA if available

@@ -60,6 +60,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "blake3-cuda"
+version = "0.1.0"
+dependencies = [
+ "home",
+ "rust-gpu-tools",
+]
+
+[[package]]
 name = "block-buffer"
 version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
