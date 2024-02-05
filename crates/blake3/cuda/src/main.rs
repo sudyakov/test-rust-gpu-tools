@@ -1,4 +1,5 @@
-use rust_gpu_tools::{cuda, program_closures, Device, GPUError, Program, Vendor};
+use rust_gpu_tools::cuda::{self, Kernel};
+use rust_gpu_tools::{program_closures, Device, GPUError, Program, Vendor};
 
 pub fn main() {
     // Список доступных устройств.
@@ -10,7 +11,11 @@ pub fn main() {
     println!("CUDA device: {}", cuda_device.name());
 
     // The test data to be hashed.
-    let test_data: Vec<u32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    let test_data: Vec<u32> = vec![
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        26, 27, 28, 29, 30, 31, 32,
+    ];
+    println!("test_data = {:?}", test_data);
 
     // This is the core. Here we write the interaction with the GPU independent of whether it is
     // CUDA or OpenCL.
@@ -18,24 +23,18 @@ pub fn main() {
         // Copy the test data to the GPU.
         let data_buffer = program.create_buffer_from_slice(&test_data)?;
 
-        // выводим содержимое буфера на экран
-        let mut test_data_copy = test_data.clone();
-        program.read_into_buffer(&data_buffer, &mut test_data_copy)?;
-        println!("test_data_copy = {:?}\n", test_data_copy);
-
         // The result buffer has the same length as the input buffers.
         let result_buffer = unsafe { program.create_buffer::<u32>(test_data.len())? };
-        print!("result_buffer = {:?}\n", result_buffer);
+        print!(
+            " data_buffer = {:?},\n result_buffer = {:?}\n",
+            data_buffer, result_buffer
+        );
 
-        // Get the kernel.
-        //let test_data_len = test_data.len() as u32;
-        let mut kernel = program.create_kernel("hello", 1, 1)?;
-        kernel.run()?;
-
-        kernel = program.create_kernel("sortDescending", 1, 1)?;
+        // Get the kernel
+        let kernel = program.create_kernel("sortDescending", 1, 1)?;
         kernel.arg(&data_buffer).arg(&result_buffer).run()?;
 
-        let mut result = vec![0u32; test_data.len().try_into().unwrap()];
+        let mut result = vec![0u32; test_data.len()];
         program.read_into_buffer(&result_buffer, &mut result)?;
 
         Ok(result)
@@ -47,9 +46,7 @@ pub fn main() {
         // Test NVIDIA CUDA Flow
         let cuda_program = cuda(nv_dev_list[0]);
         let cuda_result = cuda_program.run(closures, ()).unwrap();
-
         println!("CUDA result: {:?}", cuda_result);
-
         println!("CUDA test passed");
     } else {
         println!("No CUDA device found");
@@ -88,4 +85,3 @@ fn cuda(device: &Device) -> Program {
     let cuda_program = cuda::Program::from_bytes(cuda_device, cuda_kernel).unwrap();
     Program::Cuda(cuda_program)
 }
-

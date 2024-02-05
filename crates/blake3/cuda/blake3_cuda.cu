@@ -1,12 +1,6 @@
 //Cuda program to add two vectors
 typedef unsigned int uint;
-  /**
- * Vector addition: C = A + B.
- *
- * This sample is a very basic sample that implements element by element
- * vector addition. It is the same as the sample illustrating Chapter 2
- * of the programming guide with some additions like error checking.
- */
+
 #include <stdio.h> // printf
 #include <stdint.h> // uint32_t
 
@@ -30,28 +24,24 @@ typedef unsigned int uint;
 #define GLOBAL
 #define KERNEL extern "C" __global__
 
-KERNEL void sortDescending(int* data, int n) {
- printf("sortDescending: Hello, World!\n");
+KERNEL void sortDescending(GLOBAL uint *data, GLOBAL uint *result) {
+  printf("sortDescending: Hello, World!\n");
+  //высести в цикле значения всех елементов массива data в массив result
+  for (int i = 0; i < 32; i++) {
+    result[i] = data[i];
+  }
+  //сортировка массива result по убывани
+  thrust::sort(thrust::device, result, result + 32, thrust::greater<uint>());
+  //вывести на экран массив result и повторить это 100 раз
+  for (int i = 0; i < 32; i++) {
+    printf("%d ", result[i]);
+  }
+  printf("\n");
 }
-
-KERNEL void sortAscending(int* data, int n) {
- printf("sortAscending: Hello, World!\n");
-
-}
-
 extern "C" {
  __global__
 void hello() {
       // Вывод на екран сообщения
     printf("hello: Hello, World!\n");
-
-//   int threads_per_block = 256;
-//   int num_blocks = (n + threads_per_block - 1) / threads_per_block;
-
-//   // вызов ядра
-//   sortDescending<<<num_blocks, threads_per_block>>>(data, n);
-  
-//   // синхронизация
-//   cudaDeviceSynchronize();
   }
 }
