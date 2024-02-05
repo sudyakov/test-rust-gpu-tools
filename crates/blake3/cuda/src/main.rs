@@ -30,38 +30,32 @@ pub fn main() {
 
         Ok(result)
     });
-
-    // Run it on CUDA
     let cuda_program = cuda(cuda_device);
     let cuda_result = cuda_program.run(closures, ()).unwrap();
     println!("CUDA result: \n{:?}", cuda_result);
     println!("CUDA test passed");
-}
 
-fn print_all_devices(all_devices: &Vec<&Device>) {
-    println!("Available devices:");
-    for device in all_devices {
-        println!(" - {} ({})", device.name(), device.vendor());
-        println!("Memory: {} MB", device.memory() / 1024 / 1024);
-        println!("Compute units: {}", device.compute_units());
-        println!("Compute capability: {:?}", device.compute_capability());
-    }
-}
+    fn print_all_devices(all_devices: &Vec<&Device>) {
+        for device in all_devices {
+            println!("Memory: {} MB", device.memory() / 1024 / 1024);
 
-// Получаем первое доступное CUDA устройство из принимаемого списка.
-fn get_cuda_device(devices: Vec<&Device>) -> Result<&Device, GPUError> {
-    for device in devices {
-        if device.vendor() == Vendor::Nvidia {
-            return Ok(device);
+            println!("Compute capability: {:?}", device.compute_capability());
         }
     }
-    Err(GPUError::DeviceNotFound)
-}
 
-/// Returns a `Program` that runs on CUDA.
-fn cuda(device: &Device) -> Program {
-    let cuda_kernel = include_bytes!("../blake3_cuda.fatbin");
-    let cuda_device = device.cuda_device().unwrap();
-    let cuda_program = cuda::Program::from_bytes(cuda_device, cuda_kernel).unwrap();
-    Program::Cuda(cuda_program)
+    fn get_cuda_device(devices: Vec<&Device>) -> Result<&Device, GPUError> {
+        for device in devices {
+            if device.vendor() == Vendor::Nvidia {
+                return Ok(device);
+            }
+        }
+        Err(GPUError::DeviceNotFound)
+    }
+
+    fn cuda(device: &Device) -> Program {
+        let cuda_kernel = include_bytes!("../blake3_cuda.fatbin");
+        let cuda_device = device.cuda_device().unwrap();
+        let cuda_program = cuda::Program::from_bytes(cuda_device, cuda_kernel).unwrap();
+        Program::Cuda(cuda_program)
+    }
 }
