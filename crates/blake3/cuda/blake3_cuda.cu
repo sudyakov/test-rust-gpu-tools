@@ -1,47 +1,38 @@
-//Cuda program to add two vectors
 typedef unsigned int uint;
 
-#include <stdio.h> // printf
-#include <stdint.h> // uint32_t
+#include <stdio.h> 
+#include <stdint.h> 
 
 #include <thrust/sort.h>
 #include <thrust/execution_policy.h>
 #include <thrust/device_ptr.h>
 
-// For the CUDA runtime routines (prefixed with "cuda_")
-#include <cuda_runtime.h> // cudaMemcpy, cudaMemcpyToSymbol, etc.
-#include <helper_cuda.h> // helper function CUDA error checking and initialization
+#include <cuda_runtime.h> 
+#include <helper_cuda.h>
   
-#define DLLEXPORT __declspec(dllexport) // Определение для экспорта функций из dll в Windows 
-#define MAX_OUTPUT_RESULTS 32 // Максимальное количество результатов для вывода
+#define DLLEXPORT __declspec(dllexport) 
+#define MAX_OUTPUT_RESULTS 32 
 #if (__CUDACC_VER_MAJOR__ >= 10) && (__CUDA_ARCH__ > 300) 
-#define ROTR(v, n) __funnelshift_rc((v), (v), n) // Смешение битов вправо с использованием встроенной функции сдвига для новых версий CUDA
+#define ROTR(v, n) __funnelshift_rc((v), (v), n) 
 #else
-#define ROTR(v, n) ((v) >> n) | ((v) << (32 - n)) // Смешение битов вправо с использованием битовых операций для старых версий CUDA
+#define ROTR(v, n) ((v) >> n) | ((v) << (32 - n))
 #endif
 
-// Определение для глобальных и статических функций.
 #define GLOBAL
 #define KERNEL extern "C" __global__
 
-KERNEL void sortDescending(GLOBAL uint *data, GLOBAL uint *result) {
-  printf("sortDescending: Hello, World!\n");
-  //высести в цикле значения всех елементов массива data в массив result
-  for (int i = 0; i < 32; i++) {
+KERNEL void sortDescending(uint num, GLOBAL uint *data, GLOBAL uint *result) {
+
+  for (int i = 0; i < num; i++) {
     result[i] = data[i];
   }
-  //сортировка массива result по убывани
-  thrust::sort(thrust::device, result, result + 32, thrust::greater<uint>());
-  //вывести на экран массив result и повторить это 100 раз
-  for (int i = 0; i < 32; i++) {
-    printf("%d ", result[i]);
-  }
-  printf("\n");
+
+  thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
 }
 extern "C" {
  __global__
 void hello() {
-      // Вывод на екран сообщения
-    printf("hello: Hello, World!\n");
+
+    printf("void hello(): Hello, World!\n");
   }
 }
