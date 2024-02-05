@@ -808,6 +808,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "test_vectors"
+version = "0.0.0"
+dependencies = [
+ "blake3",
+ "hex",
+ "reference_impl",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "thiserror"
 version = "1.0.56"
 source = "registry+https://github.com/rust-lang/crates.io-index"

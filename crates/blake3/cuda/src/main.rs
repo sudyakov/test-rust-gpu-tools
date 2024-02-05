@@ -1,6 +1,9 @@
 use rust_gpu_tools::{cuda, program_closures, Device, GPUError, Program, Vendor};
+use std::time::Instant;
+use std::vec::*;
 
 pub fn main() {
+    let repeat_count = 1000;
     let all_devices = Device::all();
     print_all_devices(&all_devices);
 
@@ -10,9 +13,12 @@ pub fn main() {
     let test_data: Vec<u32> = vec![
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
         26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
-        49,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64,
     ];
-    println!("test_data:\n{:?}", test_data);
+    println!("test_data:\n{:?}\n", test_data);
+
+    // Начинаем отсчет времени
+    let start = Instant::now();
 
     // Сортируем массив test_data по убыванию
     let closures = program_closures!(|program, _args| -> Result<Vec<u32>, GPUError> {
@@ -34,9 +40,39 @@ pub fn main() {
     });
 
     let cuda_program = cuda(cuda_device);
-    let cuda_result = cuda_program.run(closures, ());
+    let mut cuda_result = cuda_program.run(closures, ());
+
+    for _ in 0..repeat_count {
+        cuda_result = cuda_program.run(closures, ());
+    }
+
     println!("CUDA result: \n{:?}", cuda_result.unwrap());
-    println!("CUDA test passed");
+    // Замеряем время после выполнения функции
+    let duration = start.elapsed();
+    // Выводим замеренное время
+    println!("Time elapsed in expensive_function() is: {:?}", duration);
+    println!("CUDA test passed\n");
+
+    // Стартуем таймер для замера времени выполнения на CPU
+    let cpu_start = Instant::now();
+    // Сортируем на процессоре
+    let mut cpu_result: Vec<_> = test_data.clone().into_iter().collect();
+
+    for _ in 0..repeat_count {
+    cpu_result.sort_by(|a, b| b.cmp(a));
+    }
+
+    //Выводим резульатт на укран
+    println!("CPU result: \n{:?}", cpu_result);
+
+    // Замеряем время после выполнения функции на процессоре
+    let cpu_duration = cpu_start.elapsed();
+    // Выводим замеренное время
+    println!(
+        "Time elapsed in expensive_function() is: {:?}",
+        cpu_duration
+    );
+    println!("CPU test passed\n");
 
     fn print_all_devices(all_devices: &Vec<&Device>) {
         for device in all_devices {
