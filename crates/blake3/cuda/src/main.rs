@@ -13,6 +13,7 @@ pub fn main() {
     ];
     println!("test_data:\n{:?}", test_data);
 
+    // Сортируем массив test_data по убыванию
     let closures = program_closures!(|program, _args| -> Result<Vec<u32>, GPUError> {
         let data_buffer = program.create_buffer_from_slice(&test_data)?;
 
@@ -30,6 +31,7 @@ pub fn main() {
 
         Ok(result)
     });
+
     let cuda_program = cuda(cuda_device);
     let cuda_result = cuda_program.run(closures, ());
     println!("CUDA result: \n{:?}", cuda_result);
