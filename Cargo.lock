@@ -136,6 +136,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "blake3_c_rust_bindings"
+version = "0.0.0"
+dependencies = [
+ "arrayref",
+ "arrayvec",
+ "cc",
+ "page_size",
+ "rand",
+ "rand_chacha",
+ "reference_impl",
+]
+
+[[package]]
 name = "blake3_guts"
 version = "0.0.0"
 dependencies = [
