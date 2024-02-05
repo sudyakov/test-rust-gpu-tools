@@ -10,13 +10,18 @@ typedef unsigned int uint;
 #include <cuda_runtime.h> 
 #include <helper_cuda.h>
   
-#define DLLEXPORT __declspec(dllexport) 
-#define MAX_OUTPUT_RESULTS 32 
-#if (__CUDACC_VER_MAJOR__ >= 10) && (__CUDA_ARCH__ > 300) 
-#define ROTR(v, n) __funnelshift_rc((v), (v), n) 
-#else
-#define ROTR(v, n) ((v) >> n) | ((v) << (32 - n))
+#define DLLEXPORT __declspec(dllexport)
+#define MAX_OUTPUT_RESULTS 32
+
+// Добавляем описание
+#if (__CUDACC_VER_MAJOR__ >= 10) && (__CUDA_ARCH__ > 300)
+// Используем встроенную функцию funnelshift для битового сдвига вправо
+#define ROTR(v, n) __funnelshift_rc((v), (v), n)
+#else 
+// Для старых версий CUDA используем стандартный битовый сдвиг 
+#define ROTR(v, n) ((v) >> n) | ((v) << (32 - n))  
 #endif
+
 
 #define GLOBAL
 #define KERNEL extern "C" __global__
