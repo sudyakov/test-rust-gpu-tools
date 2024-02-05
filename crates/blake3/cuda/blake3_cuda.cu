@@ -32,19 +32,11 @@ typedef unsigned int uint;
 
 KERNEL void sortDescending(int* data, int n) {
  printf("sortDescending: Hello, World!\n");
-   // получаем индекс текущей нити
-  int index = blockIdx.x * blockDim.x + threadIdx.x;
+}
 
-  // выводим все значения масива
-  for (int i = 0; i < n; i++) {
-    printf("%d ", data[i]);
-  }
-  printf("\n");
+KERNEL void sortAscending(int* data, int n) {
+ printf("sortAscending: Hello, World!\n");
 
-  
-  // сортируем данные с помощью библиотеки Thrust
-  thrust::device_ptr<int> dev_ptr(data);
-  thrust::sort(dev_ptr, dev_ptr + n, thrust::greater<int>());
 }
 
 extern "C" {
