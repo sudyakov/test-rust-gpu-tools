@@ -40,7 +40,7 @@ pub fn main() {
     let bb: Vec<u32> = vec![5, 6, 7, 8];
 
     // Test data blake3.
-    let blake3_data: Vec<u32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    //let blake3_data: Vec<u32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
     // This is the core. Here we write the interaction with the GPU independent of whether it is
     // CUDA or OpenCL.
@@ -53,11 +53,11 @@ pub fn main() {
         let aa_buffer = program.create_buffer_from_slice(&aa)?;
         let bb_buffer = program.create_buffer_from_slice(&bb)?;
         // Copy the test data to the GPU.
-        let blake3_buffer = program.create_buffer_from_slice(&blake3_data)?;
+        //let blake3_buffer = program.create_buffer_from_slice(&blake3_data)?;
 
         // The result buffer has the same length as the input buffers.
         let result_buffer = unsafe { program.create_buffer::<u32>(length)? };
-        let blake3_result_buffer = unsafe { program.create_buffer::<u32>(blake3_data.len())? };
+        //let blake3_result_buffer = unsafe { program.create_buffer::<u32>(blake3_data.len())? };
 
         // Get the kernel.
         let mut kernel = program.create_kernel("add", 1, 1)?;
