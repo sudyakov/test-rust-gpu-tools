@@ -85,8 +85,8 @@ pub fn main() {
     fn print_all_devices(all_devices: &Vec<&Device>) {
         for device in all_devices {
             println!("Memory: {} MB", device.memory() / 1024 / 1024);
-
             println!("Compute capability: {:?}", device.compute_capability());
+            
         }
     }
 
