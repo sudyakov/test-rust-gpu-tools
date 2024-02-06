@@ -1,3 +1,9 @@
 [workspace]
 resolver = "2"
-members = ["crates/*", "crates/blake3/cuda", "crates/blake3/b3sum", "crates/blake3/rust/guts", "crates/blake3/c/blake3_c_rust_bindings","crates/blake3/test_vectors"]
+members = ["crates/*",
+"crates/blake3/cuda",
+"crates/blake3/b3sum",
+"crates/blake3/rust/guts",
+"crates/blake3/c/blake3_c_rust_bindings",
+"crates/blake3/test_vectors",
+]

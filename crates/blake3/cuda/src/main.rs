@@ -4,6 +4,12 @@ use std::vec::*;
 
 pub fn main() {
     let repeat_count = 1000;
+
+    // NVIDIA GeForce RTX 4080 cores=9728, tmus=304, rops=112, memory=16Gb
+    // total number of threads is global_work_size * local_work_size
+    let global_work_size = 32;
+    let local_work_size = 1024;
+
     let all_devices = Device::all();
     print_all_devices(&all_devices);
 
@@ -17,16 +23,13 @@ pub fn main() {
     ];
     println!("test_data:\n{:?}\n", test_data);
 
-    // Начинаем отсчет времени
-    let start = Instant::now();
-
     // Сортируем массив test_data по убыванию
     let closures = program_closures!(|program, _args| -> Result<Vec<u32>, GPUError> {
         let data_buffer = program.create_buffer_from_slice(&test_data)?;
 
         let result_buffer = unsafe { program.create_buffer::<u32>(test_data.len())? };
 
-        let kernel = program.create_kernel("sortDescending", 1, 1)?;
+        let kernel = program.create_kernel("sortDescending", global_work_size, local_work_size)?;
         kernel
             .arg(&(test_data.len() as u32))
             .arg(&data_buffer)
@@ -40,26 +43,31 @@ pub fn main() {
     });
 
     let cuda_program = cuda(cuda_device);
+
+    // Начинаем отсчет времени
+    let start = Instant::now();
     let mut cuda_result = cuda_program.run(closures, ());
 
     for _ in 0..repeat_count {
         cuda_result = cuda_program.run(closures, ());
     }
 
-    println!("CUDA result: \n{:?}", cuda_result.unwrap());
     // Замеряем время после выполнения функции
     let duration = start.elapsed();
     // Выводим замеренное время
     println!("Time elapsed in expensive_function() is: {:?}", duration);
+
+    println!("CUDA result: \n{:?}", cuda_result.unwrap());
+
     println!("CUDA test passed\n");
 
-    // Стартуем таймер для замера времени выполнения на CPU
-    let cpu_start = Instant::now();
     // Сортируем на процессоре
     let mut cpu_result: Vec<_> = test_data.clone().into_iter().collect();
+    // Стартуем таймер для замера времени выполнения на CPU
+    let cpu_start = Instant::now();
 
     for _ in 0..repeat_count {
-    cpu_result.sort_by(|a, b| b.cmp(a));
+        cpu_result.sort_by(|a, b| b.cmp(a));
     }
 
     //Выводим резульатт на укран
