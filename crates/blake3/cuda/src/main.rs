@@ -3,7 +3,7 @@ use std::time::Instant;
 use std::vec::*;
 
 pub fn main() {
-    let repeat_count = 10000;
+    let repeat_count = 100;
 
     // NVIDIA GeForce RTX 4080 cores=9728, tmus=304, rops=112, memory=16Gb
     // total number of threads is global_work_size * local_work_size 
