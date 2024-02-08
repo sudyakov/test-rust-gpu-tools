@@ -1,8 +1,10 @@
-
+typedef unsigned int uint;
 #include <thrust/sort.h>
 #include <thrust/execution_policy.h>
 #include <thrust/device_ptr.h>
+#include <cuda_runtime.h> 
 
+#include <stdio.h> 
 #include <stdint.h>
 
 #if defined(_WIN32)
@@ -21,21 +23,33 @@
 #endif
 
 #define GLOBAL
+#define KERNEL extern "C" __global__
 
-__global__
-void sort(uint num, GLOBAL uint *data, GLOBAL uint *result) {
+
+// __global__ void sort() {
+// //   for (int i = 0; i < num; i++) {
+// //     result[i] = data[i];
+// //   }
+// //   thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
+// printf("Hello sort function on GPU!\n");
+// }
+
+
+KERNEL void sortDescending(const uint32_t dimgrid, const uint32_t threads, uint num, GLOBAL uint *data, GLOBAL uint *result) {
 
   for (int i = 0; i < num; i++) {
     result[i] = data[i];
   }
-  thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
+
+//void sort() {
+// //   for (int i = 0; i < num; i++) {
+// //     result[i] = data[i];
+// //   }
+// //   thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
+//printf("Hello sort function on GPU!\n");
+//};
+
+ //sort<<<dimgrid, threads>>>();
+ thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
 }
 
-
-extern "C" {
-__host__ DLLEXPORT void
-sortDescending(const uint32_t dimgrid, const uint32_t threads, uint num, GLOBAL uint *data, GLOBAL uint *result)
-{
-  sort<<<dimgrid, threads>>>(num, data, result);
-}
-}

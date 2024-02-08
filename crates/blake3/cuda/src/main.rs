@@ -19,7 +19,7 @@ use std::vec::*;
     }
 
     fn cuda(device: &Device) -> Program {
-        let cuda_kernel = include_bytes!("../blake3_cuda.fatbin");
+        let cuda_kernel = include_bytes!("../blake3.fatbin");
         let cuda_device = device.cuda_device().unwrap();
         let cuda_program = cuda::Program::from_bytes(cuda_device, cuda_kernel).unwrap();
         Program::Cuda(cuda_program)
