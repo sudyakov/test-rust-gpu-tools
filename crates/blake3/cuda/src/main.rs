@@ -24,12 +24,16 @@ pub fn main() {
 
     // Сортируем массив test_data по убыванию
     let closures = program_closures!(|program, _args| -> Result<Vec<u32>, GPUError> {
+        let dimgrid: u32 = 2;
+        let threads: u32 = 32;
         let data_buffer = program.create_buffer_from_slice(&test_data)?;
 
         let result_buffer = unsafe { program.create_buffer::<u32>(test_data.len())? };
 
         let kernel = program.create_kernel("sortDescending", global_work_size, local_work_size)?;
         kernel
+        .arg(&dimgrid)
+        .arg(&threads)
             .arg(&(test_data.len() as u32))
             .arg(&data_buffer)
             .arg(&result_buffer)

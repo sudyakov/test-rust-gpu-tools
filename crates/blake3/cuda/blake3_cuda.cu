@@ -9,30 +9,31 @@ typedef unsigned int uint;
 
 #include <cuda_runtime.h> 
 #include <helper_cuda.h>
-  
+
+#if defined(_WIN32)
 #define DLLEXPORT __declspec(dllexport)
+#else
+#define DLLEXPORT
+#endif /* _WIN32 */
+
 #define MAX_OUTPUT_RESULTS 32
 
-// Добавляем описание
+// Written and optimized by Dave Collins Sep 2023.
 #if (__CUDACC_VER_MAJOR__ >= 10) && (__CUDA_ARCH__ > 300)
-// Используем встроенную функцию funnelshift для битового сдвига вправо
 #define ROTR(v, n) __funnelshift_rc((v), (v), n)
-#else 
-// Для старых версий CUDA используем стандартный битовый сдвиг 
-#define ROTR(v, n) ((v) >> n) | ((v) << (32 - n))  
+#else
+#define ROTR(v, n) ((v) >> n) | ((v) << (32 - n))
 #endif
-
 
 #define GLOBAL
 #define KERNEL extern "C" __global__
 
-
 KERNEL void sortDescending(const uint32_t dimgrid, const uint32_t threads, uint num, GLOBAL uint *data, GLOBAL uint *result) {
 
-result = data;
-  //for (int i = 0; i < num; i++) {
-    //result[i] = data[i];
-  //}
+
+  for (int i = 0; i < num; i++) {
+    result[i] = data[i];
+  }
 
   thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
 }
