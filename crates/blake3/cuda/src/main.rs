@@ -93,7 +93,7 @@ pub fn main() {
     );
     print!("CPU repeat counter: {}\n", cpu_counter);
     println!("CPU test passed\n");
-
+}
     fn print_all_devices(all_devices: &Vec<&Device>) {
         for device in all_devices {
             println!("Memory: {} MB", device.memory() / 1024 / 1024);
@@ -116,4 +116,3 @@ pub fn main() {
         let cuda_program = cuda::Program::from_bytes(cuda_device, cuda_kernel).unwrap();
         Program::Cuda(cuda_program)
     }
-}
