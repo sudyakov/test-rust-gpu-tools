@@ -3,7 +3,7 @@ use std::time::Instant;
 use std::vec::*;
 
 pub fn main() {
-    //let repeat_count = 1;
+    let repeat_count = 10;
 
     // NVIDIA GeForce RTX 4080 cores=9728, memory=16Gb
     // total number of threads is global_work_size * local_work_size
@@ -17,7 +17,8 @@ pub fn main() {
     println!("CUDA device: {}\n", cuda_device.name());
 
     let test_data: Vec<u32> = vec![
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        26, 27, 28, 29, 30, 31, 32,
     ];
     println!("Test Data:\n{:?}\n", test_data);
 
@@ -44,20 +45,38 @@ pub fn main() {
 
     // Начинаем отсчет времени
     let start = Instant::now();
-    let cuda_result = cuda_program.run(closures, ());
+    let mut cuda_counter = 0;
+    // Ignore reuslts, just time repeated runs
+    let cuda_result: Result<Vec<u32>, GPUError> = loop {
+        let result = cuda_program.run(closures, ());
+        cuda_counter += 1;
+        if cuda_counter == repeat_count {
+            break result;
+        }
+    };
 
     // Замеряем время после выполнения функции
     let duration = start.elapsed();
     println!("CUDA result: \n{:?}", cuda_result.unwrap());
     // Выводим замеренное время
     println!("Time elapsed in expensive_function() is: {:?}", duration);
+    print!("CUDA repeat counter: {}\n", cuda_counter);
     println!("CUDA test passed\n");
 
-    // Сортируем все значения на процессоре по убыванию
-    let mut cpu_result: Vec<u32> = test_data.clone().into_iter().collect();
     // Стартуем таймер для замера времени выполнения на CPU
     let cpu_start = Instant::now();
-    cpu_result.sort_by(|a, b| b.cmp(a));
+    let mut cpu_counter = 0;
+
+    // Сортируем все значения на процессоре по убыванию
+    let cpu_result: Vec<u32> = loop {
+         let mut result: Vec<u32> = test_data.clone().into_iter().collect();
+         result.sort_by(|a, b| b.cmp(a));
+         cpu_counter += 1;
+         if cpu_counter == repeat_count {
+            break result;
+        }
+    };
+
     // Замеряем время после выполнения функции на процессоре
     let cpu_duration = cpu_start.elapsed();
 
@@ -68,6 +87,7 @@ pub fn main() {
         "Time elapsed in expensive_function() is: {:?}",
         cpu_duration
     );
+    print!("CPU repeat counter: {}\n", cpu_counter);
     println!("CPU test passed\n");
 
     fn print_all_devices(all_devices: &Vec<&Device>) {

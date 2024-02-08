@@ -6,4 +6,5 @@ members = ["crates/*",
 "crates/blake3/rust/guts",
 "crates/blake3/c/blake3_c_rust_bindings",
 "crates/blake3/test_vectors",
+"crates/blake3/tools/compiler_version",
 ]
