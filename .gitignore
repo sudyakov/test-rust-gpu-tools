@@ -3,3 +3,4 @@
 cuda-samples-12.3
 build
 .cache
+.metadata
