@@ -26,11 +26,13 @@ typedef unsigned int uint;
 #define GLOBAL
 #define KERNEL extern "C" __global__
 
-KERNEL void sortDescending(uint num, GLOBAL uint *data, GLOBAL uint *result) {
 
-  for (int i = 0; i < num; i++) {
-    result[i] = data[i];
-  }
+KERNEL void sortDescending(const uint32_t dimgrid, const uint32_t threads, uint num, GLOBAL uint *data, GLOBAL uint *result) {
+
+result = data;
+  //for (int i = 0; i < num; i++) {
+    //result[i] = data[i];
+  //}
 
   thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
 }
