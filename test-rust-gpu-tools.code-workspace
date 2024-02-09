@@ -1,12 +1,8 @@
 {
-    "folders": [
-        {
-            "path": "."
-        }
-    ],
-    "settings": {
-        "rust-analyzer.linkedProjects": [
-            "./crates/blake3/tools/compiler_version/Cargo.toml"
-        ]
-    }
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
 }
