@@ -8,7 +8,7 @@ typedef unsigned int uint;
 #include <thrust/device_ptr.h>
 
 #include <cuda_runtime.h> 
-#include <helper_cuda.h>
+// #include <helper_cuda.h>
 
 #if defined(_WIN32)
 #define DLLEXPORT __declspec(dllexport)
