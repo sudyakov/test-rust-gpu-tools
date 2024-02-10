@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
-members = ["crates/*",
+members = [
+"crates/*",
 "crates/blake3/cuda",
 "crates/blake3/b3sum",
 "crates/blake3/rust/guts",
@@ -8,3 +9,8 @@ members = ["crates/*",
 "crates/blake3/test_vectors",
 "crates/blake3/tools/compiler_version",
 ]
+
+[profile.dev]
+opt-level = 1               # Use slightly better optimizations.
+overflow-checks = false     # Disable integer overflow checks.
+debug = "full"          # Enable debug assertions in release builds.
