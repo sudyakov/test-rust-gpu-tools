@@ -26,13 +26,13 @@ typedef unsigned int uint;
 #define KERNEL extern "C" __global__
 
 
-// __global__ void sort() {
+//__global__ void sort() {
 // //   for (int i = 0; i < num; i++) {
 // //     result[i] = data[i];
 // //   }
 // //   thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
 // printf("Hello sort function on GPU!\n");
-// }
+ //}
 
 
 KERNEL void sortDescending(const uint32_t dimgrid, const uint32_t threads, uint num, GLOBAL uint *data, GLOBAL uint *result) {
@@ -49,7 +49,9 @@ KERNEL void sortDescending(const uint32_t dimgrid, const uint32_t threads, uint 
 //printf("Hello sort function on GPU!\n");
 //};
 
+//sort();
  //sort<<<dimgrid, threads>>>();
  thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
+
 }
 
