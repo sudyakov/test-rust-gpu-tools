@@ -32,7 +32,7 @@ use std::vec::*;
         // NVIDIA GeForce RTX 4080 cores=9728, memory=16Gb
         // total number of threads is global_work_size * local_work_size
         let global_work_size = 76;
-        let local_work_size = 128;
+        let local_work_size = 32;
     
         let all_devices = Device::all();
         print_all_devices(&all_devices);

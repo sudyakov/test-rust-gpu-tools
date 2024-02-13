@@ -22,36 +22,25 @@ typedef unsigned int uint;
 #define ROTR(v, n) ((v) >> n) | ((v) << (32 - n))
 #endif
 
+// dim3 blocks(64);
+// dim3 threads(256); 
+__global__ void sort(){
+  printf("sort()");
+}
+
 #define GLOBAL
 #define KERNEL extern "C" __global__
-
-
-//__global__ void sort() {
-// //   for (int i = 0; i < num; i++) {
-// //     result[i] = data[i];
-// //   }
-// //   thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
-// printf("Hello sort function on GPU!\n");
- //}
-
-
-KERNEL void sortDescending(const uint32_t dimgrid, const uint32_t threads, uint num, GLOBAL uint *data, GLOBAL uint *result) {
+KERNEL void sortDescending(const dim3 dimgrid, const dim3 threads, uint num, GLOBAL uint *data, GLOBAL uint *result) {
 
   for (int i = 0; i < num; i++) {
     result[i] = data[i];
   }
 
-//void sort() {
-// //   for (int i = 0; i < num; i++) {
-// //     result[i] = data[i];
-// //   }
-// //   thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
-//printf("Hello sort function on GPU!\n");
-//};
 
 //sort();
- //sort<<<dimgrid, threads>>>();
+ sort<<<dimgrid, threads>>>();
  thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
 
-}
+};
+
 
