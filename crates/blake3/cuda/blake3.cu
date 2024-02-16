@@ -24,9 +24,9 @@ typedef unsigned int uint;
 
 // dim3 blocks(64);
 // dim3 threads(256); 
-__global__ void sort(){
-  printf("sort()");
-}
+// __global__ void sort(){
+//   printf("sort()");
+// }
 
 #define GLOBAL
 #define KERNEL extern "C" __global__
@@ -38,7 +38,7 @@ KERNEL void sortDescending(const dim3 dimgrid, const dim3 threads, uint num, GLO
 
 
 //sort();
- sort<<<dimgrid, threads>>>();
+ //sort<<<dimgrid, threads>>>();
  thrust::sort(thrust::device, result, result + num, thrust::greater<uint>());
 
 };
